@@ -1,9 +1,13 @@
 Automation of NADs Router Configs
 ---------------------------------
 
-Update: As of 16/09/2016 this readme is out of date. I'm currently working on Automating the process of creating the files below.
+Change Log
+----------
 
-Please see provisioning_list.md
+Update 22:08: Moved statically created files into Manual Provisioning. This readme is for use with files in Manual Provisioning
+
+Update: I'm currently working on Automating the process of creating the files below. Please see provisioning_list.md
+
 
 Requirements
 ------------
