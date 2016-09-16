@@ -14,7 +14,7 @@ if myChoice != "Y" :
 else:
     print("OK")
 
-osPath = "Working_Templates"
+osPath = "working_templates"
 osNewPath = osPath + "/" + templateName
 
 if not os.path.isdir(osNewPath):
