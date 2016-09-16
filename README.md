@@ -1,13 +1,12 @@
 Automation of NADs Router Configs
 ---------------------------------
 
+I've been learning python for a few weeks, looking at various scripts. This is my first major project.
+
 Change Log
 ----------
 
-Update 22:08: Moved statically created files into Manual Provisioning. This readme is for use with files in Manual Provisioning
-
-Update: I'm currently working on Automating the process of creating the files below. Please see provisioning_list.md
-
+Updated Provisioning Read Me
 
 Requirements
 ------------

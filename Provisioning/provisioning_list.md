@@ -31,22 +31,22 @@ provisioning_script.py
 
 #Manual Part 3
 0. Need to manually update the include template statement
-
+```python
 from jinja_variables_template import *
-
+```
 1. Need to manually update the template variable to point to the jinja2 'osPathDst' variable, not the
 'osPathDst' variable when populated with jinja2_'templateName'_main.py" 
-
+```python
 #Render the template based on jinja2 file name variable
 template = jenv.get_template('template.jinja2')
-
+```
 2. Need to manually update the jinja2 variables based on Manual Part 1
-
+```python
 #Render the configuration based on the variables then print the output
 output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
                          telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
                          date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName)
-
+```
 Wish List
 ---------
 
