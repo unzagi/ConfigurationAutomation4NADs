@@ -86,7 +86,7 @@ Generate the Python Variable file
 ---------------------------------
 
 1. In the next step of this process you will need to create a variable python config file.
-I've already created a python template file in the template folder which looks like:
+I've already created a python template file (ready to clone) in the template folder which looks like:
 ```python
 # Import python time module
 import time
