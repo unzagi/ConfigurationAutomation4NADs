@@ -47,7 +47,9 @@ This template pulls through information based on some variables and just give an
 
 	# < ------------ configuration end ------------>
 
-3. Paste in the NADS config over the top of  where it says:
+3. Paste in the NADS config
+
+Paste the configuration over the top of:
 
 	# Paste your configuration here, then set the variables based on jinja_variables_template and any additional one add to sed file."
 
