@@ -14,12 +14,12 @@ if myChoice != "Y" :
 else:
     print("OK")
 
-osPath = JN0
+osPath = templateName
 
 if not os.path.isdir(osPath):
-    os.path.isdir(osPath)
-    #print(os.makedirs(osPath))
+    print(os.path.makedirs(osPath))
+    print("Created folder" + osPath)
 
 else:
-    print("NO")
+    print("Error: Folder already exists")
 
