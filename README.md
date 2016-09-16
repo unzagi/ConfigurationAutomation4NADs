@@ -265,7 +265,7 @@ Run the file and you should recieve the following output:
 Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 25 2016, 22:01:18) [MSC v.1900 32 bit (Intel)] on win32
 Type "copyright", "credits" or "license()" for more information.
 >>> 
- RESTART: C:\Users\MonSI\AppData\Local\Programs\Python\Python35-32\Scripts\Juniper Configurations\Template\jinja-template.py 
+ RESTART: C:\Python35-32\Scripts\Template\jinja-template.py 
 # < ------------ Start of Information Only - Do not apply  ------------>
 
 # Juniper Template
@@ -299,4 +299,7 @@ Type "copyright", "credits" or "license()" for more information.
 Tempate written to file:  template.txt
 >>> 
 ```
-As you create new variables and template files your output will vary - that's all you need for now.
+
+As you create new variables and template files your output will vary - that's all you need.
+
+
