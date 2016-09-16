@@ -124,14 +124,13 @@ Informational Variables
 -----------------------
 
 There are informaional variables to be set:
-
 1. the template specific variables set the type of hardware and also the old NADs template name and new NADS template name
 2. The router template information all comes from the excel spreadsheet containing all the existing NADS templates
 3. The generated file information needs to be set to the 
---1. What name you give the output text file e.g. template.txt or JU03-template.txt where JU03 = NADS template number
---2. What name you give the jinja2 file e.g. template.jinja2 or JU03.jinja2 where JU03 = NADS template number
---3. Leave 'dateNow' variable as this generates the current time/date
---4. The engineer name who has created the template
+ 1. What name you give the output text file e.g. template.txt or JU03-template.txt where JU03 = NADS template number
+ 2. What name you give the jinja2 file e.g. template.jinja2 or JU03.jinja2 where JU03 = NADS template number
+ 3. Leave 'dateNow' variable as this generates the current time/date
+ 4. The engineer name who has created the template
 
 Configuration Variables
 -----------------------
@@ -211,18 +210,18 @@ The python file is written in Python 3. To run this script the jinja2 module mus
 
 The bits that need to change when running this file on a new configuration file are:
 
-..1. "from jinja_variables_template import * - this must be changed to your variables file e.g. jinja_ju03_variables. This line imports the variables directly into the main python file. 
+ 1. "from jinja_variables_template import * - this must be changed to your variables file e.g. jinja_ju03_variables. This line imports the variables directly into the main python file. 
 
-..2. You MUST set the template name in the python configuration file to the jinja file you have created previously. Remember it looks for the file within the directory you are working in, so you need to make sure your jinja2 template 
+ 2. You MUST set the template name in the python configuration file to the jinja file you have created previously. Remember it looks for the file within the directory you are working in, so you need to make sure your jinja2 template 
 exists in the same directory as the running python script. This is the same for the varables python file.
 ```python
 #Render the template based on jinja2 file name variable
 template = jenv.get_template('template.jinja2')
 ```
-..3 output = tempate.render(longassline...) - so in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. Remember, if you have 
+ 3. output = tempate.render(longassline...) - so in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. Remember, if you have 
 created new variables you need to add them into here so they are automatically generated. The formatting rule I've set by here is - jinja2 variables are lowercase with underscores, and python variables are camel case.
 
-..4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
+ 4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
 I've chosen to do this so it doesn't keep ovewriting the files.
 ```python
 #Write the configuration to file if the file does not already exist
