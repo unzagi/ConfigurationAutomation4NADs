@@ -1,5 +1,3 @@
-# Configuration Automation Readme Simon Brooks
-
 Requirements
 ------------
 Python 3 for Window
@@ -49,7 +47,9 @@ This template pulls through information based on some variables and just give an
 
 	# < ------------ configuration end ------------>
 
-3. Paste in the NADS config over the top of  where it says "# Paste your configuration here, then set the variables based on jinja_variables_template and any additional one add to sed file."
+3. Paste in the NADS config over the top of  where it says:
+
+	# Paste your configuration here, then set the variables based on jinja_variables_template and any additional one add to sed file."
 
 2. TA the NADS configuration file for any changes that need to be made.
 
