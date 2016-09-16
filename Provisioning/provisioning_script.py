@@ -3,6 +3,8 @@ import time
 import sys
 from shutil import copyfile
 
+## Create the Router Template Folder
+
 print("\nPlease enter the router template folder name to be generated: ")
 templateName = input()
 
@@ -18,20 +20,16 @@ myChoice = input()
 
 osPath = "working_templates"
 osNewPath = osPath + "/" + templateName
-print("\n*** Provisining Required Files ***")
+print("\n*** Provisioning Required Files ***")
 
 if not os.path.isdir(osNewPath):
-
-
     os.makedirs(osNewPath)
     print("Created folder in " + osNewPath)
 else:
     print("Error: " + osNewPath + " already exists")
     print("Continuing.....")
     
-#Define variables
-outputFileName = osNewPath + "/template.jinja2"
-
+## Copy the jinja2 template file and rename
 osFolderSrc = "template_files"
 osFileSrc = "template.jinja2"
 osPathSrc = osFolderSrc + "/" + osFileSrc
@@ -80,6 +78,18 @@ if os.path.exists(osNewPath):
     print("Written to file: ",osPathDst)
 
 else:
-    print('\nError: ',outputFileName,'does not exist! Check and retry')
+    print('\nError: ',osPathSrc,'does not exist! Check and retry')
+    
+## Copy the python template file and rename
+print(osFolderSrc)
+osFileSrc = "jinja_variables_template.py"
+osPathSrc = osFolderSrc + "/" + osFileSrc
+print("osPathSrc: " + osPathSrc)
 
-
+osNewFileDst = "jinja2_" + templateName + "variables.py"
+osPathDst = osNewPath + "/" + osNewFileDst
+print("osPathDst: "osPathDst)
+print("osNewPath: "osNewPath)
+if os.path.exists(osNewPath):
+    print("osPathSrc: " + osPathSrc)
+    print("\nCopying " + osPathSrc + " template file to: " + osPathDst)
