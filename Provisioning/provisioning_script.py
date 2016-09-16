@@ -80,7 +80,7 @@ if os.path.exists(osNewPath):
 else:
     print('\nError: ',osPathSrc,'does not exist! Check and retry')
     
-## Copy the python template file and rename
+## Copy the python variables template file and rename
 print(osFolderSrc)
 osFileSrc = "jinja_variables_template.py"
 osPathSrc = osFolderSrc + "/" + osFileSrc
@@ -98,3 +98,23 @@ if os.path.exists(osNewPath):
     
     print("osPathSrc: " + osPathSrc)
     print("\nCopying " + osPathSrc + " template file to: " + osPathDst)
+
+## Copy the python template file and rename
+print(osFolderSrc)
+osFileSrc = "jinja-template.py"
+osPathSrc = osFolderSrc + "/" + osFileSrc
+print("osPathSrc: " + osPathSrc)
+print(templateName)
+osNewFileDst = "jinja2_" + templateName + "_main.py"
+print("osNewFileDst: " + osNewFileDst)
+osPathDst = osNewPath + "/" + osNewFileDst
+print("osPathDst: " + osPathDst)
+print("osNewPath: "+ osNewPath)
+if os.path.exists(osNewPath):
+
+    copyfile(osPathSrc, osPathDst)
+    print("osPathSrc: " + osPathSrc)
+    print("\nCopying " + osPathSrc + " template file to: " + osPathDst)
+
+
+
