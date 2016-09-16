@@ -17,15 +17,16 @@ myChoice = input()
 
 osPath = "working_templates"
 osNewPath = osPath + "/" + templateName
+print("\n*** Provisining Required Files ***")
 
 if not os.path.isdir(osNewPath):
 
-    print("\n*** File Creation Started ***")
+
     os.makedirs(osNewPath)
     print("Created folder in " + osNewPath)
 else:
-    print("\n*** Folder Error ***")
-    print(osNewPath + " already exists")
+    print("Error: " + osNewPath + " already exists")
+    print("Continuing.....")
     
 #Define variables
 outputFileName = osNewPath + "/template.jinja2"
@@ -37,21 +38,20 @@ osPathSrc = osFolderSrc + "/" + osFileSrc
 osNewFileDst = templateName + ".jinja2"
 osPathDst = osNewPath + "/" + osNewFileDst
 
-print("\n*** Checking ***")
-print("\nChecking for " + osFileSrc+ " file in " + osPathDst)
-
 if os.path.exists(osNewPath):
-    print("\nFile Exists, creating named copy of " + osFileSrc)
+    print("\nCopying " + osPathSrc + " template file to: " + osPathDst)
     copyfile(osPathSrc, osPathDst)
+    print("\nRenaming " + osPathSrc +" to file: " + osPathDst)
     print("\n*** File Copy Complete ***")
-    print("\nWritten file: " + osPathDst + " to disk")
     time.sleep(5)
-    print("\n*** NADs Configuration Uploader to jina2 template named: " + osPathDst + "  ***")
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("\n*** NADs Config Loader ***")
+    print("Destination : " + osPathDst)
     print("\nPress enter then CTRL+Z on new line after pasting")
     print("\nPlease Paste in the NADs Configuration File below: ")
     inputConfiguration = sys.stdin.read()
 
-    f = open(outputFileName, "r")
+    f = open(osPathDst, "r")
     contents = f.readlines()
     f.close()
 
