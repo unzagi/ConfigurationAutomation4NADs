@@ -11,8 +11,8 @@ Requirements
 Assumptions
 -----------
 
-1.Basic working knowledge of Python
-2.The above requirements are installed and setup
+1. Basic working knowledge of Python
+2. The above requirements are installed and setup
 
 Process - Generating the Jinja2 template
 ----------------------------------------
