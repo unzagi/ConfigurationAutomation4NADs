@@ -1,4 +1,4 @@
-Automation of NADS Router Configs
+Automation of NADs Router Configs
 ---------------------------------
 
 Requirements
