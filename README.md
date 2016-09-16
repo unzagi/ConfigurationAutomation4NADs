@@ -80,7 +80,7 @@ Example Jinja2 template Configuration:
 	set interfaces {{ iface_wan_name }} unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
 	# < ------------ configuration end ------------>
 
-3. Save this config as a .jinja2 file - with the naming convention of ##.jinja2 - where ## represents the NADS project template i.e. JU01.jinja2
+3. Save this config as a .jinja2 file - with the naming convention of ##.jinja2 - where ## represents the NADS project template number i.e. JU01.jinja2
 
 Generate the Python Variable file
 ---------------------------------
