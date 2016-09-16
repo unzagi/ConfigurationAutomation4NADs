@@ -4,16 +4,15 @@ import sys
 
 #Define variables
 outputFileName = "template.jinja2"
-
-print("\nNADs Configuration Uploader to jina2 template...")
-print("\nPlease Paste in the NADs Configuration File")
-inputConfiguration = sys.stdin.read()
-print(inputConfiguration)
-print("\n Checking for ", outputFileName, " file in working directory")
+print("\nChecking for ", outputFileName, " file in working directory")
+print("\n", outputFileName, "exists")
+print("\n*** NADs Configuration Uploader to jina2 template... ***")
+print("\nPress enter then CTRL+Z on new line after pasting")
 
 if os.path.exists(outputFileName):
+    print("\nPlease Paste in the NADs Configuration File below: ")
+    inputConfiguration = sys.stdin.read()
 
-    print("\n", outputFileName, " exists")
     f = open(outputFileName, "r")
     contents = f.readlines()
     f.close()
@@ -25,8 +24,7 @@ if os.path.exists(outputFileName):
     contents = "".join(contents)
     f.write(contents)
     f.close()
-
-    print("written to file: ",outputFileName)
+    print("Written to file: ",outputFileName)
 
 else:
     print('n\Error: ',outputFileName,'does not exist! Check and retry')
