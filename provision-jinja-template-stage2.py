@@ -2,7 +2,7 @@ import os
 import time
 import sys
 
-print("\nPleae enter the router template name to be generated : ")
+print("\nPleae enter the router template folder name to be generated : ")
 templateName = input()
 print("The template name is: ",templateName)
 print("Press Y if this is this correct?")
