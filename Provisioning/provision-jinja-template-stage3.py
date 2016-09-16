@@ -1,12 +1,12 @@
 from shutil import copyfile
 
-osFolderSrc = "Template"
+osFolderSrc = "template_files"
 osFileSrc = "template.jinja2"
 osPathSrc = osFolderSrc + "/" + osFileSrc
 
 print(osPathSrc)
 
-osPathDst = "no.txt"
+osPathDst = "no.jinja2"
 
 copyfile(osPathSrc, osPathDst)
-print("Written")
+print("Written file: " + osPathDst)
