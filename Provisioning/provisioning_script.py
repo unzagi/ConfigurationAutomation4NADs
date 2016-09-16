@@ -58,11 +58,11 @@ if os.path.exists(osNewPath):
     contents.insert(27, inputConfiguration) # write to line 27 and apply input configuration
 
     #write the file
-    f = open(outputFileName, "w") 
+    f = open(osPathDst, "w") 
     contents = "".join(contents)
     f.write(contents)
     f.close()
-    print("Written to file: ",outputFileName)
+    print("Written to file: ",osPathDst)
 
 else:
     print('\nError: ',outputFileName,'does not exist! Check and retry')
