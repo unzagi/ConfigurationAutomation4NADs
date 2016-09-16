@@ -2,7 +2,7 @@ import time
 
 # Set the template specific description variables - information from NADS template excel spreadsheet
 hardwareMake = 'Juniper'
-hardwareModel = 'Juniper SRX300'
+hardwareModel = 'Juniper SRX300+SRX-MP-1SFP-GE'
 projectTemplateName = 'JU03'
 previousTemplateName = 'JN48'
 
@@ -10,7 +10,7 @@ telcoName = 'TTB  Ethernet - 10Gb NNI'
 circuitName = 'EAD1000'
 bandwidth = '100-200Mbps'
 routing = 'BGP'
-connectionType = 'Core - A'
+connectionType = 'Core - C'
 customerLans = 1
 customerStaticRoutes = 0
 outOfScope = "More than one static NAT, DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else"

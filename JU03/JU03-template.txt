@@ -3,10 +3,10 @@
 # Juniper Template
 # Template Generated
 # From jinja2 file: JU03.jinja2
-# On: Fri Sep 16 14:27:19 2016
+# On: Fri Sep 16 17:10:26 2016
 # By: Simon Brooks
 
-# For Device: Juniper SRX300
+# For Device: Juniper SRX300+SRX-MP-1SFP-GE
 # Template name: JU03
 # Template has superseded: JN48
 
@@ -15,7 +15,7 @@
 # Circuit Name: EAD1000
 # Bandwidth: 100-200Mbps
 # Routing Protocol: BGP
-# Connection Type: Core - A
+# Connection Type: Core - C
 # Number of Customer LANs Supported: 1
 # Number of Static Routes supported: 0
 # Out of Scope Configuration: More than one static NAT, DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else
