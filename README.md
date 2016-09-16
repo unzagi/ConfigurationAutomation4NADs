@@ -218,15 +218,29 @@ exists in the same directory as the running python script. This is the same for 
 #Render the template based on jinja2 file name variable
 template = jenv.get_template('template.jinja2')
 ```
- 3. output = tempate.render(longassline...) - so in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. Remember, if you have 
-created new variables you need to add them into here so they are automatically generated. The formatting rule I've set by here is - jinja2 variables are lowercase with underscores, and python variables are camel case.
-
+ 3. So in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. 
+ Remember, if you have created new variables you need to add them into here so they are automatically generated. 
 ```python
 #Render the configuration based on the variables then print the output
 output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
                          telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
                          date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName)
 ```
+The formatting rule I've set by here is - jinja2 variables are lowercase with underscores, and python variables are [camel case.]: https://en.wikipedia.org/wiki/CamelCase
+
+If you decided to add the 'hostname' value in the Configuration Variables example your code would look like
+
+```python
+#Render the configuration based on the variables then print the output
+output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
+                         telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
+                         date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName,hostname=hostname)
+```
+
+Where the 'hostname' variable is added. Your python variable file would need to be set if you wanted anything to appear.
+
+
+
  4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
 I've chosen to do this so it doesn't keep ovewriting the files.
 ```python
@@ -240,3 +254,49 @@ else:
     print('n\Error: ',outputFileName,'already exists! Check and retry')
 ```
 That's it. You should have everything you need to generate configuration files.
+
+Running the The Main Router Template Python File
+------------------------------------------------
+
+You need to run the jinja-template.py file into python in order to generate the config.
+
+Run the file and you should recieve the following output:
+```python
+Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 25 2016, 22:01:18) [MSC v.1900 32 bit (Intel)] on win32
+Type "copyright", "credits" or "license()" for more information.
+>>> 
+ RESTART: C:\Users\MonSI\AppData\Local\Programs\Python\Python35-32\Scripts\Juniper Configurations\Template\jinja-template.py 
+# < ------------ Start of Information Only - Do not apply  ------------>
+
+# Juniper Template
+# Template Generated
+# From jinja2 file: template.jinja2
+# On: Fri Sep 16 16:27:34 2016
+# By: Simon Brooks
+
+# For Device: Juniper SRX300
+# Template name: template
+# Template has superseded: none
+
+# Template specific information
+# Telco: Telco Name
+# Circuit Name: Circuit Name
+# Bandwidth: bandwidth
+# Routing Protocol: routng protocol
+# Connection Type: Connection Type
+# Number of Customer LANs Supported: 1
+# Number of Static Routes supported: 0
+# Out of Scope Configuration: What is out of Scope?
+
+# < ------------ End of Information Only - Do not apply  ------------>
+
+# < ------------ configuration start ------------>
+
+# Paste your configuration here, then set the variables based on jinja_variables_template and any additional one add to sed file.
+
+# < ------------ configuration end ------------>
+
+Tempate written to file:  template.txt
+>>> 
+```
+As you create new variables and template files your output will vary - that's all you need for now.
