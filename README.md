@@ -5,7 +5,7 @@ Requirements
 ------------
 
 1. Python 3 for Windows
-2. Install jinja2 for Python 3s
+2. Install jinja2 for Python 3
 3. Excel Spreadsheet of NADs templates for template specific information
 
 Assumptions
