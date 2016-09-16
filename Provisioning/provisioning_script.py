@@ -5,6 +5,7 @@ from shutil import copyfile
 
 print("\nPlease enter the router template folder name to be generated: ")
 templateName = input()
+
 print("The template name is: ",templateName)
 print("Press Y if this is this correct?")
 myChoice = input()
@@ -47,9 +48,23 @@ if os.path.exists(osNewPath):
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     print("\n*** NADs Config Loader ***")
     print("Destination : " + osPathDst)
+    print("\nPlease enter the NADS template name: ")
+    existingTemplate = input()
+
     print("\nPress enter then CTRL+Z on new line after pasting")
     print("\nPlease Paste in the NADs Configuration File below: ")
     inputConfiguration = sys.stdin.read()
+
+    templatePathSrc = osNewPath + "/" + existingTemplate + ".txt"
+    print(osNewPath)
+    print(templatePathSrc)
+
+    if not os.path.exists(templatePathSrc):
+        with open(templatePathSrc, 'wt') as f:
+            f.write(inputConfiguration)
+            print("\nNADs template written to file: ",templatePathSrc)
+    else:
+        print('n\Error: ',templatePathSrc,'already exists!')
 
     f = open(osPathDst, "r")
     contents = f.readlines()
