@@ -221,6 +221,12 @@ template = jenv.get_template('template.jinja2')
  3. output = tempate.render(longassline...) - so in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. Remember, if you have 
 created new variables you need to add them into here so they are automatically generated. The formatting rule I've set by here is - jinja2 variables are lowercase with underscores, and python variables are camel case.
 
+```python
+#Render the configuration based on the variables then print the output
+output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
+                         telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
+                         date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName)
+```
  4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
 I've chosen to do this so it doesn't keep ovewriting the files.
 ```python
