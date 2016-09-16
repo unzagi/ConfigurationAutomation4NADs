@@ -14,13 +14,13 @@ if myChoice != "Y" :
 else:
     print("OK")
 
-osPath = templateName
+osPath = "Working Templates"
+osNewPath = osPath + "/" + templateName
 
-if not os.path.isdir(osPath):
+if not os.path.isdir(osNewPath):
 
-    os.makedirs(osPath)
-    print("Created folder " + osPath)
+    os.makedirs(osNewPath)
+    print("Created folder " + osNewPath)
 
 else:
-    print("Error: Folder " + osPath + " already exists")
-
+    print("Error: Folder " + osNewPath + " already exists")
