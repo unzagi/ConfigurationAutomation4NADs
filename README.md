@@ -1,6 +1,8 @@
 Automation of NADs Router Configs
 ---------------------------------
 
+Update: As of 16/09/2016 this readme is out of date. I'm currently working on Automating the process of creating the files below.
+
 Requirements
 ------------
 
