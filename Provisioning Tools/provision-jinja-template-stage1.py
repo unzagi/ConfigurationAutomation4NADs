@@ -4,6 +4,7 @@ import sys
 
 #Define variables
 outputFileName = "template.jinja2"
+
 print("\nChecking for ", outputFileName, " file in working directory")
 print("\n", outputFileName, "exists")
 print("\n*** NADs Configuration Uploader to jina2 template... ***")
