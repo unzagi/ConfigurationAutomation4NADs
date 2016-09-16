@@ -1,0 +1,29 @@
+# < ------------ Start of Information Only - Do not apply  ------------>
+
+# Juniper Template
+# Template Generated
+# From jinja2 file: template.jinja2
+# On: Fri Sep 16 14:56:35 2016
+# By: Simon Brooks
+
+# For Device: Juniper SRX300
+# Template name: JU03
+# Template has superseded: JN48
+
+# Template specific information
+# Telco: TTB  Ethernet - 10Gb NNI
+# Circuit Name: EAD1000
+# Bandwidth: 100-200Mbps
+# Routing Protocol: BGP
+# Connection Type: Core - A
+# Number of Customer LANs Supported: 1
+# Number of Static Routes supported: 0
+# Out of Scope Configuration: More than one static NAT, DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else
+
+# < ------------ End of Information Only - Do not apply  ------------>
+
+# < ------------ configuration start ------------>
+
+# Paste your configuration here, then set the variables based on jinja_variables_template and any additional one add to sed file.
+
+# < ------------ configuration end ------------>
