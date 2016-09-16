@@ -5,14 +5,14 @@ Requirements
 ------------
 
 1. Python 3 for Windows
-2. Install jinja2 for Python 3
+2. Install jinja2 for Python 3s
 3. Excel Spreadsheet of NADs templates for template specific information
 
 Assumptions
 -----------
 
-1. Basic working knowledge of Python
-2. The above requirements are installed and setup
+1.Basic working knowledge of Python
+
 
 Process - Generating the Jinja2 template
 ----------------------------------------
@@ -80,13 +80,13 @@ Example Jinja2 template Configuration:
 	set interfaces {{ iface_wan_name }} unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
 	# < ------------ configuration end ------------>
 
-3. Save this config as a .jinja2 file - with the naming convention of ##.jinja2 - where ## represents the NADS project template number i.e. JU01.jinja2
+3. Save this config as a .jinja2 file - with the naming convention of ##.jinja2 - where ## represents the NADS project template i.e. JU01.jinja2
 
 Generate the Python Variable file
 ---------------------------------
 
 1. In the next step of this process you will need to create a variable python config file.
-I've already created a python template file (ready to clone) in the template folder which looks like:
+I've already created a python template file in the template folder which looks like:
 ```python
 # Import python time module
 import time
@@ -224,7 +224,7 @@ created new variables you need to add them into here so they are automatically g
 
 ..4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
 I've chosen to do this so it doesn't keep ovewriting the files.
-
+```python
 #Write the configuration to file if the file does not already exist
 if not os.path.exists(outputFileName):
     with open(outputFileName, 'wt') as f:
@@ -233,5 +233,5 @@ if not os.path.exists(outputFileName):
         print("\nTempate written to file: ",outputFileName)
 else:
     print('n\Error: ',outputFileName,'already exists! Check and retry')
-
+```
 That's it. You should have everything you need to generate configuration files.
