@@ -5,7 +5,7 @@ from shutil import copyfile
 
 ## Create the Router Template Folder
 
-print("\nPlease enter the router template folder name to be generated: ")
+print("\nPlease enter the new router template folder name to be generated: ")
 templateName = input()
 
 print("The template name is: ",templateName)
