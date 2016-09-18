@@ -1,3 +1,17 @@
+Automation of NADs Configurations
+---------------------------------
+
+I've now created a basic environment that can be run using vagrant.
+This has been built from my other repo: https://github.com/unzagi/vagrant-php-box
+
+My Atlas webpage is: https://atlas.hashicorp.com/unzagi/boxes/ubuntu/
+
+We're currently using v0.1 of the ubuntu box.
+
+I've only included the jinja2 dependencies, and pip3 for python.
+If I add any additional python modules or other dependencies I will update the box file
+and I've documented the process for this.
+
 
  To make changes to the .box file
  -----------------------------
