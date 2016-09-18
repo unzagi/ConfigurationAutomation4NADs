@@ -1,6 +1,9 @@
 Automation of NADs Configurations
 ---------------------------------
 
+Introduction
+------------
+
 I've now created a basic environment that can be run using vagrant.
 This has been built from my other repo: https://github.com/unzagi/vagrant-php-box
 
@@ -12,21 +15,31 @@ I've only included the jinja2 dependencies, and pip3 for python.
 If I add any additional python modules or other dependencies I will update the box file
 and I've documented the process for this.
 
+To Run the Vagrant box
+-------------------
 
- To make changes to the .box file
- -----------------------------
+1. Clone the repo
+2. Navigate to the folder with the vagrant file in
+3. Run vagrant up
 
- To make additional changes to the vagrant .box file
+Folders
+-------
 
- Instructions are taken from: [scotch.io](https://scotch.io/tutorials/how-to-create-a-vagrant-base-box-from-an-existing-one)
+1. To use the scripts in the VM
+2. Copy the scripts in ```ConfigurationAutomation4NADs\Scripts``` into the ```ConfigurationAutomation4NADs\Scripts\Vagrant\scripts``` folder
 
- 1. The box should be running, so SSH into it
+To make changes to the .box file
+-----------------------------
 
- ```
+Instructions are taken from: [scotch.io](https://scotch.io/tutorials/how-to-create-a-vagrant-base-box-from-an-existing-one)
+
+1. The box should be running, so SSH into it
+
+```bash
  vagrant ssh
 ```
- 2. Setup the server by running any installation or mkfile commands
- ```bash
+2. Setup the server by running any installation or mkfile commands
+```bash
  sudo apt-get update
  sudo apt-get upgrade
  sudo apt-get install vim
@@ -38,14 +51,14 @@ and I've documented the process for this.
  sudo apt-get install php5-cgi php5-cli php5-curl php5-common php5-gd php5-mysql
  sudo service apache2 restart
 ```
- 3. Make the Box as Small as possible
- ```bash
- sudo apt-get clean
+3. Make the Box as Small as possible
+```bash
+sudo apt-get clean
 ```
 4.Then, “zero out” the drive (only for Ubuntu) :
- ```bash
-  sudo dd if=/dev/zero of=/EMPTY bs=1M
-  sudo rm -f /EMPTY
+```bash
+sudo dd if=/dev/zero of=/EMPTY bs=1M
+sudo rm -f /EMPTY
 ```
 
 Repackage the box file
@@ -55,6 +68,7 @@ vagrant package --output mynew.box
 ```
 
 Upload .box file to Atlas area
+------------------------------
 
 1. If a new box
 
