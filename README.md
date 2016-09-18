@@ -1,6 +1,8 @@
 Automation of NADs Configurations
 ---------------------------------
 
+I've been learning python for a few weeks, looking at various scripts. This is my first major project.
+
 Scripts Folder: Contains the NADs configuration python files. There are Windows and Linux versions I am currently developing.
 
 Vagrant Folder: This contains the vagrant file and two folders scripts and sites. Please check the README.md.
