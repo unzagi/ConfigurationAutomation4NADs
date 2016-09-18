@@ -1,0 +1,238 @@
+# Login banner
+set system login message "\nAny unauthorised attempt to connect to, reconfigure\nor compromise this equipment is an offence under the\nComputer Misuse Act (1990). Any individual engaged\nin such activities will be liable to prosecution\nunder the said Act.\n\n"
+
+# Hostname
+set system host-name [HOSTNAME]
+
+# Root user settings
+set system root-authentication encrypted-password "$1$3TZNMNBJ$9y2wqL6GTeZHlTuUy9LBQ0"
+
+# Admin user settings
+set system login user admin full-name "Emergency Only Local Account"
+set system login user admin class super-user
+set system login user admin uid 2010
+set system login user admin authentication encrypted-password "$1$.XyCiNTW$vcxMLeIDFbdGCCtILMmQy1"
+
+# Default remote user
+set system login user remote full-name "Default remote"
+set system login user remote uid 100
+set system login user remote class super-user
+
+# Remote escalation user & class
+set system login class remoteescalation permissions all
+set system login user remote-escalation full-name "Escalation remote user"
+set system login user remote-escalation uid 2000
+set system login user remote-escalation class remoteescalation
+
+# Remote engineer user & class note deny-commands set in TACACS
+set system login class remotenoc permissions all
+set system login user remote-noc full-name "Engineer remote user"
+set system login user remote-noc uid 2001
+set system login user remote-noc class remotenoc
+
+# First line remote user & class note allow-commands set in TACACS
+set system login class remotenoc permissions all
+set system login class remotefirstline deny-commands .*
+set system login class remotefirstline deny-configuration .*
+set system login user remote-first-line full-name "First Line remote user"
+set system login user remote-first-line uid 2002
+set system login user remote-first-line class remotefirstline
+
+# Read only remote user & class
+set system login class remotereadonly permissions secret
+set system login class remotereadonly permissions view
+set system login class remotereadonly permissions view-configuration
+set system login user remote-read-only full-name "Read-only remote user"
+set system login user remote-read-only uid 2003
+set system login user remote-read-only class remotereadonly
+
+# Configure name servers
+set system name-server 62.171.194.104
+set system name-server 62.171.194.105
+
+# Configure SSH
+set system services ssh protocol-version v2
+set system services ssh root-login deny
+set system services ssh connection-limit 3
+set system services ssh rate-limit 2
+set system services ssh client-alive-interval 60
+
+# Configure J-Web 
+set system services web-management https system-generated-certificate
+set system services web-management session session-limit 3
+set system services web-management session idle-timeout 5
+
+# Timezone & NTP
+set system time-zone Europe/London
+set system ntp server 194.238.48.2 prefer
+set system ntp boot-server 194.238.48.2
+
+# TACACS
+set system tacplus-server 194.238.49.99 secret "$9$qmfz9CuOIctudbs2GUF3690I"
+set system tacplus-server 194.238.49.99 port 49
+set system tacplus-server 194.238.49.99 single-connection
+set system tacplus-server 194.238.49.99 source-address [LOOPBACK]
+set system tacplus-options service-name junos-exec
+set system tacplus-options exclude-cmd-attribute
+set system accounting events login
+set system accounting events interactive-commands
+set system accounting destination tacplus server 194.238.49.99 port 49
+set system accounting destination tacplus server 194.238.49.99 secret "$9$qmfz9CuOIctudbs2GUF3690I"
+set system accounting destination tacplus server 194.238.49.99 single-connection
+set system authentication-order tacplus
+set system authentication-order password
+
+# Local Logging
+set system syslog file messages any warning
+set system syslog file messages authorization info
+set system syslog file messages archive size 1000000 files 10 world-readable
+set system syslog file interactive-commands interactive-commands info
+set system syslog file interactive-commands match command
+set system syslog file interactive-commands archive size 1000000
+set system syslog file interactive-commands archive files 10
+set system syslog file interactive-commands archive world-readable
+set system syslog file permitted-traffic any any
+set system syslog file permitted-traffic match RT_FLOW_SESSION_CREATE
+set system syslog file permitted-traffic archive size 1000000
+set system syslog file permitted-traffic archive files 10
+set system syslog file permitted-traffic archive world-readable
+set system syslog file blocked-traffic any any
+set system syslog file blocked-traffic match RT_FLOW_SESSION_DENY
+set system syslog file blocked-traffic archive size 1000000
+set system syslog file blocked-traffic archive files 10
+set system syslog file blocked-traffic archive world-readable
+set system syslog file interfaces any info
+set system syslog file interfaces match LINK
+set system syslog file interfaces archive size 1000000
+set system syslog file interfaces archive files 10
+set system syslog file interfaces archive world-readable
+
+# WAN IP Interfaces
+set interfaces ge-0/0/0 vlan-tagging
+set interfaces ge-0/0/0 description "WAN"
+set interfaces ge-0/0/0 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/0 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
+set interfaces ge-0/0/0 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/0 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
+
+# WAN Routing
+set routing-options autonomous-system [ASN]
+set routing-options autonomous-system asdot-notation
+set protocols bgp precision-timers
+set protocols bgp hold-time 30
+set protocols bgp group RM type external
+set protocols bgp group RM import RM-IMPORT
+set protocols bgp group RM export RM-EXPORT
+set protocols bgp group RM multipath
+set protocols bgp group RM neighbor [PRI_WAN_IP_CORE] authentication-key GG89dchsw7wegfw77777wqhhn
+set protocols bgp group RM neighbor [PRI_WAN_IP_CORE] peer-as 5503
+set protocols bgp group RM neighbor [SEC_WAN_IP_CORE] authentication-key GG89dchsw7wegfw77777wqhhn
+set protocols bgp group RM neighbor [SEC_WAN_IP_CORE] peer-as 5503
+set policy-options policy-statement RM-EXPORT term INTERFACES from protocol direct
+set policy-options policy-statement RM-EXPORT term INTERFACES from interface lo0.0
+set policy-options policy-statement RM-EXPORT term INTERFACES from interface ge-0/0/1.0
+set policy-options policy-statement RM-EXPORT term INTERFACES then accept
+set policy-options policy-statement RM-EXPORT term STATIC from protocol static
+set policy-options policy-statement RM-EXPORT term STATIC accept
+set policy-options policy-statement RM-EXPORT term REJECT then reject
+set policy-options policy-statement RM-IMPORT term BGP-DEFAULT from protocol bgp
+set policy-options policy-statement RM-IMPORT term BGP-DEFAULT from route-filter 0.0.0.0/0 exact
+set policy-options policy-statement RM-IMPORT term BGP-DEFAULT then accept
+
+# LAN Interface
+set interfaces ge-0/0/1 unit 0 description "LAN - Curric"
+set interfaces ge-0/0/1 unit 0 family inet address [LAN_1_GATEWAY_CIDR]
+
+# Loopback Interface
+set interfaces lo0 unit 0 family inet address [LOOPBACK]/32
+
+# BCP38
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from source-address 0.0.0.0/32
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from destination-address 255.255.255.255/32
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then count rpf-dhcp-bootp-traffic
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then accept
+set firewall filter rpf-special-case-dhcp-bootp term default then discard
+set interfaces ge-0/0/1 unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
+
+# Disable unused interfaces
+set interfaces fe-0/0/2 disable
+set interfaces fe-0/0/3 disable
+set interfaces fe-0/0/4 disable
+set interfaces fe-0/0/5 disable
+set interfaces fe-0/0/6 disable
+set interfaces fe-0/0/7 disable
+
+# Create new Security Zones
+set security zones security-zone WAN interfaces  ge-0/0/0.[PRI_WAN_VLAN]
+set security zones security-zone WAN interfaces  ge-0/0/0.[SEC_WAN_VLAN]
+set security zones security-zone LAN interfaces  ge-0/0/1
+
+# Create new Security Policy
+set security address-book global address LAN-1-NET [LAN_1_NETWORK_CIDR]
+set security policies from-zone LAN to-zone WAN policy P1 match source-address LAN-1-NET
+set security policies from-zone LAN to-zone WAN policy P1 match destination-address any
+set security policies from-zone LAN to-zone WAN policy P1 match application any
+set security policies from-zone LAN to-zone WAN policy P1 then permit
+set security policies from-zone WAN to-zone LAN policy P1 match source-address any
+set security policies from-zone WAN to-zone LAN policy P1 match destination-address LAN-1-NET
+set security policies from-zone WAN to-zone LAN policy P1 match application any
+set security policies from-zone WAN to-zone LAN policy P1 then permit
+set security policies default-policy permit-all
+
+# Permit inbound traffic from WAN and LAN to the router
+set security zones security-zone LAN interfaces ge-0/0/1 host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/0.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/0.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/0.[PRI_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/0.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/0.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/0.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/0.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/0.[SEC_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/0.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/0.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ping
+set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ssh
+set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services https
+set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services http
+set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services snmp
+
+# Limit password brute-force attempts
+set system login retry-options tries-before-disconnect 3
+
+# Secure the console port
+set system ports console log-out-on-disconnect
+set system ports console insecure
+
+# Disable the Reset Config button
+set chassis config-button no-clear no-rescue
+
+# Management ACL
+set policy-options prefix-list MGMT-LIST 194.238.49.0/24
+set policy-options prefix-list MGMT-LIST 213.18.248.78
+set policy-options prefix-list MGMT-LIST 62.171.194.96/27
+set policy-options prefix-list MGMT-LIST 192.168.170.128/25
+set policy-options prefix-list MGMT-LIST 217.181.32.0/24
+set policy-options prefix-list MGMT-LIST 192.168.170.190/32
+set policy-options prefix-list MGMT-LIST 192.168.170.194/32
+set firewall family inet filter MGMT-FILTER term T1 from source-prefix-list MGMT-LIST
+set firewall family inet filter MGMT-FILTER term T1 from protocol tcp
+set firewall family inet filter MGMT-FILTER term T1 from protocol udp
+set firewall family inet filter MGMT-FILTER term T1 from destination-port ssh
+set firewall family inet filter MGMT-FILTER term T1 from destination-port https
+set firewall family inet filter MGMT-FILTER term T1 from destination-port snmp
+set firewall family inet filter MGMT-FILTER term T1 then accept
+set firewall family inet filter MGMT-FILTER term T2 from protocol tcp
+set firewall family inet filter MGMT-FILTER term T2 from protocol udp
+set firewall family inet filter MGMT-FILTER term T2 from destination-port ssh
+set firewall family inet filter MGMT-FILTER term T2 from destination-port https
+set firewall family inet filter MGMT-FILTER term T2 from destination-port snmp
+set firewall family inet filter MGMT-FILTER term T2 then discard
+set firewall family inet filter MGMT-FILTER term T3 then accept
+set interfaces lo0 unit 0 family inet filter input MGMT-FILTER
+
+# SNMP
+set snmp location [RMID]
+set snmp contact iflsystems@ifl.net
+set snmp community thiflonly authorization read-only
+set snmp community thiflonly client-list-name MGMT-LIST
