@@ -38,11 +38,11 @@ In the scripts folder you have:
 
  1. The box should be running, so SSH into it
 
- ```shell
+ ```
  vagrant ssh
 ```
  2. Setup the server by running any installation or mkfile commands
- ```shell
+ ```bash
  sudo apt-get update
  sudo apt-get upgrade
  sudo apt-get install vim
@@ -55,18 +55,18 @@ In the scripts folder you have:
  sudo service apache2 restart
 ```
  3. Make the Box as Small as possible
- ```shell
+ ```bash
  sudo apt-get clean
 ```
 4.Then, “zero out” the drive (only for Ubuntu) :
- ```shell
+ ```bash
   sudo dd if=/dev/zero of=/EMPTY bs=1M
   sudo rm -f /EMPTY
 ```
 
 Repackage the box file
 ----------------------
-```shell
+```bash
 vagrant package --output mynew.box
 ```
 
