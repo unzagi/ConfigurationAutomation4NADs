@@ -3,7 +3,7 @@
 # Juniper Template
 # Template Generated
 # From jinja2 file: JU02.jinja2
-# On: Sat Sep 17 00:17:52 2016
+# On: Mon Sep 19 12:57:26 2016
 # By: Simon Brooks
 
 # For Device: Juniper SRX300+SRX-MP-1SFP-GE
@@ -134,15 +134,15 @@ set system syslog file interfaces archive files 10
 set system syslog file interfaces archive world-readable
 
 # WAN IP Interfaces
-set interfaces ge-0/0/7 vlan-tagging
-set interfaces ge-0/0/7 description "WAN"
-set interfaces ge-0/0/7 mtu 1518
-set interfaces ge-0/0/7 vlan-tagging
-set interfaces ge-0/0/7 description "WAN"
-set interfaces ge-0/0/7 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces ge-0/0/7 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
-set interfaces ge-0/0/7 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces ge-0/0/7 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
+set interfaces ge-0/0/6 vlan-tagging
+set interfaces ge-0/0/6 description "WAN"
+set interfaces ge-0/0/6 mtu 1518
+set interfaces ge-0/0/6 vlan-tagging
+set interfaces ge-0/0/6 description "WAN"
+set interfaces ge-0/0/6 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/6 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
+set interfaces ge-0/0/6 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/6 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
 
 # WAN Routing
 set routing-options autonomous-system [ASN]
@@ -159,12 +159,14 @@ set protocols bgp group RM neighbor [SEC_WAN_IP_CORE] authentication-key GG89dch
 set protocols bgp group RM neighbor [SEC_WAN_IP_CORE] peer-as 5503
 set policy-options policy-statement RM-EXPORT term INTERFACES from protocol direct
 set policy-options policy-statement RM-EXPORT term INTERFACES from interface lo0.0
+set policy-options policy-statement RM-EXPORT term INTERFACES from interface ge-0/0/0.0
 set policy-options policy-statement RM-EXPORT term INTERFACES then accept
+set policy-options policy-statement RM-EXPORT term STATIC from protocol static
+set policy-options policy-statement RM-EXPORT term STATIC accept
 set policy-options policy-statement RM-EXPORT term REJECT then reject
 set policy-options policy-statement RM-IMPORT term BGP-DEFAULT from protocol bgp
 set policy-options policy-statement RM-IMPORT term BGP-DEFAULT from route-filter 0.0.0.0/0 exact
 set policy-options policy-statement RM-IMPORT term BGP-DEFAULT then accept
-set policy-options policy-statement RM-IMPORT term REJECT then reject
 
 # LAN Interface
 set interfaces ge-0/0/0 unit 0 description "LAN - Curric"
@@ -187,11 +189,11 @@ set interfaces ge-0/0/2 disable
 set interfaces ge-0/0/3 disable
 set interfaces ge-0/0/4 disable
 set interfaces ge-0/0/5 disable
-set interfaces ge-0/0/6 disable
+set interfaces ge-0/0/7 disable
 
 # Create new Security Zones
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN]
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN]
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN]
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN]
 set security zones security-zone LAN interfaces ge-0/0/0
 
 # Create new Security Policy
@@ -208,33 +210,22 @@ set security policies default-policy permit-all
 
 # Permit inbound traffic from WAN and LAN to the router
 set security zones security-zone LAN interfaces ge-0/0/0 host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ping
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ssh
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services https
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services http
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services snmp
 
-# NAT Configurations
-set interfaces lo0 unit 0 family inet address [LOOPBACK_PUBLIC_IP_CIDR]
-set security nat source pool HIDE-NAT address [LOOPBACK_PUBLIC_IP]/32
-set security nat source rule-set LAN-TO-WAN from zone LAN
-set security nat source rule-set LAN-TO-WAN to zone WAN
-set security nat source rule-set LAN-TO-WAN rule source-nat-rule match source-address [LAN_1_NETWORK_CIDR]
-set security nat source rule-set LAN-TO-WAN rule source-nat-rule then source-nat pool HIDE-NAT
-set security nat static rule-set STATIC-NAT from zone WAN
-set security nat static rule-set STATIC-NAT rule R1 match destination-address [1ST_SERVER_PUBLIC]
-set security nat static rule-set STATIC-NAT rule R1 then static-nat prefix [1ST_SERVER_PRIVATE]
-	
 # Limit password brute-force attempts
 set system login retry-options tries-before-disconnect 3
 
