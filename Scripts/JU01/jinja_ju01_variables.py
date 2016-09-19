@@ -8,7 +8,7 @@ previousTemplateName = 'JN46'
 
 telcoName = 'TTB  Ethernet - 10Gb NNI'
 circuitName = 'EAD1000'
-bandwidth = '100-300Mbps'
+bandwidth = '100-200Mbps'
 routing = 'BGP'
 connectionType = 'Core - A'
 customerLans = 1

@@ -1,24 +1,24 @@
 # < ------------ Start of Information Only - Do not apply  ------------>
 
-# {{hardware_make}} Template
+# Juniper Template
 # Template Generated
-# From jinja2 file: {{jinja2_template_name}}
-# On: {{date_time}}
-# By: {{engineer_name}}
+# From jinja2 file: JU06.jinja2
+# On: Mon Sep 19 15:30:39 2016
+# By: Simon Brooks
 
-# For Device: {{hardware_model}}
-# Template name: {{template_name}}
-# Template has superseded: {{previous_template_name}}
+# For Device: Juniper SRX300
+# Template name: JU06
+# Template has superseded: JN43
 
 # Template specific information
-# Telco: {{telco_name}}
-# Circuit Name: {{circuit_name}}
-# Bandwidth: {{bandwidth}}
-# Routing Protocol: {{routing}}
-# Connection Type: {{connection_type}}
-# Number of Customer LANs Supported: {{customer_lans}}
-# Number of Static Routes supported: {{customer_static_routes}}
-# Out of Scope Configuration: {{out_of_scope}}
+# Telco: TTB  Ethernet - 10Gb NNI
+# Circuit Name: EAD100
+# Bandwidth: 100Mbps
+# Routing Protocol: BGP
+# Connection Type: Core - C
+# Number of Customer LANs Supported: 1
+# Number of Static Routes supported: 0
+# Out of Scope Configuration: More than one static NAT, DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else
 
 # < ------------ End of Information Only - Do not apply  ------------>
 
@@ -135,12 +135,12 @@ set system syslog file interfaces archive files 10
 set system syslog file interfaces archive world-readable
 
 # WAN IP Interfaces
-set interfaces {{ iface_wan_name }} vlan-tagging
-set interfaces {{ iface_wan_name }} description "WAN"
-set interfaces {{ iface_wan_name }} unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces {{ iface_wan_name }} unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
-set interfaces {{ iface_wan_name }} unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces {{ iface_wan_name }} unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
+set interfaces ge-0/0/5 vlan-tagging
+set interfaces ge-0/0/5 description "WAN"
+set interfaces ge-0/0/5 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/5 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
+set interfaces ge-0/0/5 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/5 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
 
 # WAN Routing
 set routing-options autonomous-system [ASN]
@@ -165,8 +165,8 @@ set policy-options policy-statement RM-IMPORT term BGP-DEFAULT then accept
 set policy-options policy-statement RM-IMPORT term REJECT then reject
 
 # LAN Interface
-set interfaces {{ iface_lan_name }} unit 0 description "LAN - Curric"
-set interfaces {{ iface_lan_name }} unit 0 family inet address [LAN_1_GATEWAY_CIDR]
+set interfaces ge-0/0/0 unit 0 description "LAN - Curric"
+set interfaces ge-0/0/0 unit 0 family inet address [LAN_1_GATEWAY_CIDR]
 
 # Loopback Interface
 set interfaces lo0 unit 0 family inet address [LOOPBACK]/32
@@ -177,21 +177,21 @@ set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from desti
 set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then count rpf-dhcp-bootp-traffic
 set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then accept
 set firewall filter rpf-special-case-dhcp-bootp term default then discard
-set interfaces {{ iface_lan_name }} unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
+set interfaces ge-0/0/0 unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
 
 
 # Disable unused interfaces
-set interfaces fe-0/0/1 disable
-set interfaces fe-0/0/2 disable
-set interfaces fe-0/0/3 disable
-set interfaces fe-0/0/4 disable
-set interfaces fe-0/0/5 disable
-set interfaces fe-0/0/7 disable
+set interfaces ge-0/0/1 disable
+set interfaces ge-0/0/2 disable
+set interfaces ge-0/0/3 disable
+set interfaces ge-0/0/4 disable
+set interfaces ge-0/0/6 disable
+set interfaces ge-0/0/7 disable
 
 # Create new Security Zones
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN]
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN]
-set security zones security-zone LAN interfaces {{ iface_lan_name }}
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN]
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN]
+set security zones security-zone LAN interfaces ge-0/0/0
 
 # Create new Security Policy
 set security address-book global address LAN-1-NET [LAN_1_NETWORK_CIDR]
@@ -206,17 +206,17 @@ set security policies from-zone WAN to-zone LAN policy P1 then permit
 set security policies default-policy permit-all
 
 # Permit inbound traffic from WAN and LAN to the router
-set security zones security-zone LAN interfaces {{ iface_lan_name }} host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces {{ iface_wan_name }}.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone LAN interfaces ge-0/0/0 host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/5.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/5.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ping
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ssh
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services https

@@ -183,12 +183,12 @@ set firewall filter rpf-special-case-dhcp-bootp term default then discard
 set interfaces {{ iface_lan_name }} unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
 
 # Disable unused interfaces
-set interfaces fe-0/0/1 disable
-set interfaces fe-0/0/2 disable
-set interfaces fe-0/0/3 disable
-set interfaces fe-0/0/4 disable
-set interfaces fe-0/0/5 disable
-set interfaces fe-0/0/7 disable
+set interfaces ge-0/0/1 disable
+set interfaces ge-0/0/2 disable
+set interfaces ge-0/0/3 disable
+set interfaces ge-0/0/4 disable
+set interfaces ge-0/0/6 disable
+set interfaces ge-0/0/7 disable
 
 # Create new Security Zones
 set security zones security-zone WAN interfaces {{ iface_wan_name }}.[PRI_WAN_VLAN]

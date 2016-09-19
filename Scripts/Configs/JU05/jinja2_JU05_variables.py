@@ -27,4 +27,4 @@ engineerName = 'Simon Brooks'
 #Set the configuration file variables - use 'lowercase' and '_' for Jijna2 Variables
 #These will be subject to change/additions based on the template
 ifaceLanName = 'ge-0/0/0'
-ifaceWanName = 'ge-0/0/6'
+ifaceWanName = 'ge-0/0/5'
