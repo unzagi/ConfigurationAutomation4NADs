@@ -2,28 +2,27 @@
 
 # Juniper Template
 # Template Generated
-# From jinja2 file: JN04.jinja2
-# On: Mon Sep 19 13:17:07 2016
+# From jinja2 file: JU03.jinja2
+# On: Fri Sep 16 17:10:26 2016
 # By: Simon Brooks
 
-# For Device: Juniper SRX300
-# Template name: JN04
-# Template has superseded: JN41
+# For Device: Juniper SRX300+SRX-MP-1SFP-GE
+# Template name: JU03
+# Template has superseded: JN48
 
 # Template specific information
 # Telco: TTB  Ethernet - 10Gb NNI
-# Circuit Name: EAD100
-# Bandwidth: 100Mbps
+# Circuit Name: EAD1000
+# Bandwidth: 100-200Mbps
 # Routing Protocol: BGP
-# Connection Type: Core - A
+# Connection Type: Core - C
 # Number of Customer LANs Supported: 1
 # Number of Static Routes supported: 0
-# Out of Scope Configuration: DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else
+# Out of Scope Configuration: More than one static NAT, DHCP, VPN, Backup/Redundancy, Secondary IP Addresses & ANYTHING else
 
 # < ------------ End of Information Only - Do not apply  ------------>
 
 # < ------------ configuration start ------------>
-
 
 # Login banner
 set system login message "\nAny unauthorised attempt to connect to, reconfigure\nor compromise this equipment is an offence under the\nComputer Misuse Act (1990). Any individual engaged\nin such activities will be liable to prosecution\nunder the said Act.\n\n"
@@ -135,12 +134,15 @@ set system syslog file interfaces archive files 10
 set system syslog file interfaces archive world-readable
 
 # WAN IP Interfaces
-set interfaces ge-0/0/6 vlan-tagging
-set interfaces ge-0/0/6 description "WAN"
-set interfaces ge-0/0/6 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces ge-0/0/6 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
-set interfaces ge-0/0/6 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
-set interfaces ge-0/0/6 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
+set interfaces ge-0/0/7 vlan-tagging
+set interfaces ge-0/0/7 description "WAN"
+set interfaces ge-0/0/7 mtu 1518
+set interfaces ge-0/0/7 vlan-tagging
+set interfaces ge-0/0/7 description "WAN"
+set interfaces ge-0/0/7 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] description "msr1.th1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/7 unit [PRI_WAN_VLAN] vlan-id [PRI_WAN_VLAN] family inet address [PRI_WAN_IP]/31
+set interfaces ge-0/0/7 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] description "msr2.tc1 via TalkTalk - [CIRCUIT_REF]"
+set interfaces ge-0/0/7 unit [SEC_WAN_VLAN] vlan-id [SEC_WAN_VLAN] family inet address [SEC_WAN_IP]/31
 
 # WAN Routing
 set routing-options autonomous-system [ASN]
@@ -168,9 +170,6 @@ set policy-options policy-statement RM-IMPORT term REJECT then reject
 set interfaces ge-0/0/0 unit 0 description "LAN - Curric"
 set interfaces ge-0/0/0 unit 0 family inet address [LAN_1_GATEWAY_CIDR]
 
-# Loopback Interface
-set interfaces lo0 unit 0 family inet address [LOOPBACK]/32
-
 # BCP38
 set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from source-address 0.0.0.0/32
 set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from destination-address 255.255.255.255/32
@@ -179,17 +178,20 @@ set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then accep
 set firewall filter rpf-special-case-dhcp-bootp term default then discard
 set interfaces ge-0/0/0 unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
 
+# Loopback Interface
+set interfaces lo0 unit 0 family inet address [LOOPBACK]/32
+
 # Disable unused interfaces
-set interfaces fe-0/0/1 disable
-set interfaces fe-0/0/2 disable
-set interfaces fe-0/0/3 disable
-set interfaces fe-0/0/4 disable
-set interfaces fe-0/0/5 disable
-set interfaces fe-0/0/7 disable
+set interfaces ge-0/0/1 disable
+set interfaces ge-0/0/2 disable
+set interfaces ge-0/0/3 disable
+set interfaces ge-0/0/4 disable
+set interfaces ge-0/0/5 disable
+set interfaces ge-0/0/6 disable
 
 # Create new Security Zones
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN]
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN]
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN]
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN]
 set security zones security-zone LAN interfaces ge-0/0/0
 
 # Create new Security Policy
@@ -206,16 +208,16 @@ set security policies default-policy permit-all
 
 # Permit inbound traffic from WAN and LAN to the router
 set security zones security-zone LAN interfaces ge-0/0/0 host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces ge-0/0/6.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services https
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
-set security zones security-zone WAN interfaces ge-0/0/6.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/7.[PRI_WAN_VLAN] host-inbound-traffic protocols bgp
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services ping
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services ssh
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services https
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic system-services snmp
+set security zones security-zone WAN interfaces ge-0/0/7.[SEC_WAN_VLAN] host-inbound-traffic protocols bgp
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ping
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services ssh
 set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic system-services https
@@ -224,12 +226,15 @@ set security zones security-zone LAN interfaces lo0.0 host-inbound-traffic syste
 
 # NAT Configurations
 set interfaces lo0 unit 0 family inet address [LOOPBACK_PUBLIC_IP_CIDR]
-set security nat source pool HIDE-NAT address [LOOPBACK_PUBLIC_IP_CIDR]
+set security nat source pool HIDE-NAT address [LOOPBACK_PUBLIC_IP]/32
 set security nat source rule-set LAN-TO-WAN from zone LAN
 set security nat source rule-set LAN-TO-WAN to zone WAN
 set security nat source rule-set LAN-TO-WAN rule source-nat-rule match source-address [LAN_1_NETWORK_CIDR]
 set security nat source rule-set LAN-TO-WAN rule source-nat-rule then source-nat pool HIDE-NAT
-
+set security nat static rule-set STATIC-NAT from zone WAN
+set security nat static rule-set STATIC-NAT rule R1 match destination-address [1ST_SERVER_PUBLIC]
+set security nat static rule-set STATIC-NAT rule R1 then static-nat prefix [1ST_SERVER_PRIVATE]
+	
 # Limit password brute-force attempts
 set system login retry-options tries-before-disconnect 3
 

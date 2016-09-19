@@ -249,3 +249,4 @@ set snmp location [RMID]
 set snmp contact iflsystems@ifl.net
 set snmp community thiflonly authorization read-only
 set snmp community thiflonly client-list-name MGMT-LIST
+			

@@ -119,23 +119,6 @@ Windows Install
 
 Troubleshooting
 --
-```
-C:\nadsautomation>vagrant ssh
-`ssh` executable not found in any directories in the %PATH% variable. Is an
-SSH client installed? Try installing Cygwin, MinGW or Git, all of which
-contain an SSH client. Or use your favorite SSH client with the following
-authentication information shown below:
-
-Host: 127.0.0.1
-Port: 2222
-Username: vagrant
-Private key: C:/Users/sbrooks/.vagrant.d/boxes/unzagi-VAGRANTSLASH-ubuntu/0.1/virtualbox/vagrant_private_key
-```
-
-http://stackoverflow.com/questions/27768821/ssh-executable-not-found-in-any-directories-in-the-path
-
-
-System Properties > Environment Variables > Add Add C:\Program Files\Git\usr\bin to the PATH environment variable.
 
 Please refer to Vagrant Docs
 Please refer to Oracle Virtualbox

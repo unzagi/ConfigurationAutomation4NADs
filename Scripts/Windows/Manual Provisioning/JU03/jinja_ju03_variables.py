@@ -8,7 +8,7 @@ previousTemplateName = 'JN48'
 
 telcoName = 'TTB  Ethernet - 10Gb NNI'
 circuitName = 'EAD1000'
-bandwidth = '100-300Mbps'
+bandwidth = '100-200Mbps'
 routing = 'BGP'
 connectionType = 'Core - C'
 customerLans = 1
@@ -22,4 +22,4 @@ engineerName = 'Simon Brooks'
 
 #Set the configuration file variables - use 'lowercase' and '_' for Jijna2 Variables
 ifaceLanName = 'ge-0/0/0'
-ifaceWanName = 'ge-0/0/6'
+ifaceWanName = 'ge-0/0/7'

@@ -68,10 +68,9 @@ Paste the configuration over the top of:
 2. Technically assess the NADS configuration file for any changes that need to be made.
 
 For e.g. The SRX300 Devices no longer require a SFP card to be added.
-So the WAN interface variables can be set to ether Ge-0/0/6 or Ge-0/0/07.
+So the WAN interface variables can be set to ether Ge-0/0/6 or Ge-0/0/07. 
 Therefore for this specific part of the configuration, I can turn the Ge-0/0/0 part of my config to a jinja2 variable.
 This is helpful if we suddenly decide we don't want to use Ge-0/0/7 in the template, it can easily be changed.
-Update: The default template has now been changed to Ge-0/0/6 in the variable template.
 
 Example Jinja2 template Configuration:
 
@@ -134,7 +133,7 @@ Informational Variables
 There are informaional variables to be set:
 1. the template specific variables set the type of hardware and also the old NADs template name and new NADS template name
 2. The router template information all comes from the excel spreadsheet containing all the existing NADS templates
-3. The generated file information needs to be set to the
+3. The generated file information needs to be set to the 
  1. What name you give the output text file e.g. template.txt or JU03-template.txt where JU03 = NADS template number
  2. What name you give the jinja2 file e.g. template.jinja2 or JU03.jinja2 where JU03 = NADS template number
  3. Leave 'dateNow' variable as this generates the current time/date
@@ -143,15 +142,15 @@ There are informaional variables to be set:
 Configuration Variables
 -----------------------
 
-Note: At the moment I've only set 'ifaceLanName' and 'ifaceWanName'.
-This is mainly due to the fact I'm using automation to generate NADS templates and not to generate customer configurations.
+Note: At the moment I've only set 'ifaceLanName' and 'ifaceWanName'. 
+This is mainly due to the fact I'm using automation to generate NADS templates and not to generate customer configurations. 
 In an ideal world, NADS would be removed and python would generate the templates - but this is outside the scope and subject to debate.
 
 The configuration variables need to match what has been defined in the jinja2 file.
 
 For example, if you wanted to automate the hostname you could change the static jinja2 template by doing the following:
 
-jinja2 template
+jinja2 template 
 
 
 	# Hostname
@@ -201,7 +200,7 @@ jenv = jinja2.Environment(loader=loader, trim_blocks=True, lstrip_blocks=True)
 template = jenv.get_template('template.jinja2')
 
 #Render the configuration based on the variables then print the output
-output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName,
+output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
                          telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
                          date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName)
 #Write the configuration to file if the file does not already exist
@@ -218,19 +217,19 @@ The python file is written in Python 3. To run this script the jinja2 module mus
 
 The bits that need to change when running this file on a new configuration file are:
 
- 1. "from jinja_variables_template import * - this must be changed to your variables file e.g. jinja_ju03_variables. This line imports the variables directly into the main python file.
+ 1. "from jinja_variables_template import * - this must be changed to your variables file e.g. jinja_ju03_variables. This line imports the variables directly into the main python file. 
 
- 2. You MUST set the template name in the python configuration file to the jinja file you have created previously. Remember it looks for the file within the directory you are working in, so you need to make sure your jinja2 template
+ 2. You MUST set the template name in the python configuration file to the jinja file you have created previously. Remember it looks for the file within the directory you are working in, so you need to make sure your jinja2 template 
 exists in the same directory as the running python script. This is the same for the varables python file.
 ```python
 #Render the template based on jinja2 file name variable
 template = jenv.get_template('template.jinja2')
 ```
- 3. So in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file.
- Remember, if you have created new variables you need to add them into here so they are automatically generated.
+ 3. So in here you list all of the i.jinja2 variables listed in the jinja2 template file, followed by the python variables we've listed in the python file. 
+ Remember, if you have created new variables you need to add them into here so they are automatically generated. 
 ```python
 #Render the configuration based on the variables then print the output
-output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName,
+output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
                          telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
                          date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName)
 ```
@@ -240,7 +239,7 @@ If you decided to add the 'hostname' value in the Configuration Variables exampl
 
 ```python
 #Render the configuration based on the variables then print the output
-output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName,
+output = template.render(hardware_make=hardwareMake,hardware_model=hardwareModel,template_name=projectTemplateName,previous_template_name=previousTemplateName,jinja2_template_name=jinja2TemplateName, 
                          telco_name=telcoName,circuit_name=circuitName,bandwidth=bandwidth,routing=routing,connection_type=connectionType,customer_lans=customerLans,customer_static_routes=customerStaticRoutes,out_of_scope=outOfScope,
                          date_time=dateNow,engineer_name=engineerName,iface_lan_name=ifaceLanName,iface_wan_name=ifaceWanName,hostname=hostname)
 ```
@@ -249,7 +248,7 @@ Where the 'hostname' variable is added. Your python variable file would need to 
 
 
 
- 4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text.
+ 4. The last bit of code at the end doesnt need to change, but this basically states that if the text file already exists, dont output the file to text. 
 I've chosen to do this so it doesn't keep ovewriting the files.
 ```python
 #Write the configuration to file if the file does not already exist
@@ -272,8 +271,8 @@ Run the file and you should recieve the following output:
 ```python
 Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 25 2016, 22:01:18) [MSC v.1900 32 bit (Intel)] on win32
 Type "copyright", "credits" or "license()" for more information.
->>>
- RESTART: C:\Python35-32\Scripts\Template\jinja-template.py
+>>> 
+ RESTART: C:\Python35-32\Scripts\Template\jinja-template.py 
 # < ------------ Start of Information Only - Do not apply  ------------>
 
 # Juniper Template
@@ -305,7 +304,9 @@ Type "copyright", "credits" or "license()" for more information.
 # < ------------ configuration end ------------>
 
 Tempate written to file:  template.txt
->>>
+>>> 
 ```
 
 As you create new variables and template files your output will vary - that's all you need.
+
+
