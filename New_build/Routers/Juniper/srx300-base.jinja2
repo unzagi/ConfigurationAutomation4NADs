@@ -1,0 +1,98 @@
+# Login banner
+set system login message "\nAny unauthorised attempt to connect to, reconfigure\nor compromise this equipment is an offence under the\nComputer Misuse Act (1990). Any individual engaged\nin such activities will be liable to prosecution\nunder the said Act.\n\n"
+
+# Root user settings
+set system root-authentication encrypted-password "$1$3TZNMNBJ$9y2wqL6GTeZHlTuUy9LBQ0"
+
+# Admin user settings
+set system login user admin full-name "Emergency Only Local Account"
+set system login user admin class super-user
+set system login user admin uid 2010
+set system login user admin authentication encrypted-password "$1$.XyCiNTW$vcxMLeIDFbdGCCtILMmQy1"
+
+# Default remote user
+set system login user remote full-name "Default remote"
+set system login user remote uid 100
+set system login user remote class super-user
+
+# Remote escalation user & class
+set system login class remoteescalation permissions all
+set system login user remote-escalation full-name "Escalation remote user"
+set system login user remote-escalation uid 2000
+set system login user remote-escalation class remoteescalation
+
+# Remote engineer user & class note deny-commands set in TACACS
+set system login class remotenoc permissions all
+set system login user remote-noc full-name "Engineer remote user"
+set system login user remote-noc uid 2001
+set system login user remote-noc class remotenoc
+
+# First line remote user & class note allow-commands set in TACACS
+set system login class remotenoc permissions all
+set system login class remotefirstline deny-commands .*
+set system login class remotefirstline deny-configuration .*
+set system login user remote-first-line full-name "First Line remote user"
+set system login user remote-first-line uid 2002
+set system login user remote-first-line class remotefirstline
+
+# Read only remote user & class
+set system login class remotereadonly permissions secret
+set system login class remotereadonly permissions view
+set system login class remotereadonly permissions view-configuration
+set system login user remote-read-only full-name "Read-only remote user"
+set system login user remote-read-only uid 2003
+set system login user remote-read-only class remotereadonly
+
+# Configure SSH
+set system services ssh protocol-version v2
+set system services ssh root-login deny
+set system services ssh connection-limit 3
+set system services ssh rate-limit 2
+set system services ssh client-alive-interval 60
+
+# Configure J-Web 
+set system services web-management https system-generated-certificate
+set system services web-management session session-limit 3
+set system services web-management session idle-timeout 5
+
+# Local Logging
+set system syslog file messages any warning
+set system syslog file messages authorization info
+set system syslog file messages archive size 1000000 files 10 world-readable
+set system syslog file interactive-commands interactive-commands info
+set system syslog file interactive-commands match command
+set system syslog file interactive-commands archive size 1000000
+set system syslog file interactive-commands archive files 10
+set system syslog file interactive-commands archive world-readable
+set system syslog file permitted-traffic any any
+set system syslog file permitted-traffic match RT_FLOW_SESSION_CREATE
+set system syslog file permitted-traffic archive size 1000000
+set system syslog file permitted-traffic archive files 10
+set system syslog file permitted-traffic archive world-readable
+set system syslog file blocked-traffic any any
+set system syslog file blocked-traffic match RT_FLOW_SESSION_DENY
+set system syslog file blocked-traffic archive size 1000000
+set system syslog file blocked-traffic archive files 10
+set system syslog file blocked-traffic archive world-readable
+set system syslog file interfaces any info
+set system syslog file interfaces match LINK
+set system syslog file interfaces archive size 1000000
+set system syslog file interfaces archive files 10
+set system syslog file interfaces archive world-readable
+
+# Limit password brute-force attempts
+set system login retry-options tries-before-disconnect 3
+
+# Secure the console port
+set system ports console log-out-on-disconnect
+set system ports console insecure
+
+# Disable the Reset Config button
+set chassis config-button no-clear no-rescue
+
+# BCP38
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from source-address 0.0.0.0/32
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp from destination-address 255.255.255.255/32
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then count rpf-dhcp-bootp-traffic
+set firewall filter rpf-special-case-dhcp-bootp term allow-dhcp-bootp then accept
+set firewall filter rpf-special-case-dhcp-bootp term default then discard

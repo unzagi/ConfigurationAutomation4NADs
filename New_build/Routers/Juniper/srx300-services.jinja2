@@ -1,0 +1,56 @@
+# Hostname
+set system host-name [HOSTNAME]
+
+# Configure name servers
+set system name-server 194.238.50.2
+set system name-server 194.238.50.3
+
+# Timezone & NTP
+set system time-zone Europe/London
+set system ntp server 194.238.48.2 prefer
+set system ntp boot-server 194.238.48.2
+
+# TACACS
+set system tacplus-server 194.238.49.99 secret "$9$qmfz9CuOIctudbs2GUF3690I"
+set system tacplus-server 194.238.49.99 port 49
+set system tacplus-server 194.238.49.99 single-connection
+set system tacplus-server 194.238.49.99 source-address [LOOPBACK]
+set system tacplus-options service-name junos-exec
+set system tacplus-options exclude-cmd-attribute
+set system accounting events login
+set system accounting events interactive-commands
+set system accounting destination tacplus server 194.238.49.99 port 49
+set system accounting destination tacplus server 194.238.49.99 secret "$9$qmfz9CuOIctudbs2GUF3690I"
+set system accounting destination tacplus server 194.238.49.99 single-connection
+set system authentication-order tacplus
+set system authentication-order password
+
+# Management ACL
+set policy-options prefix-list MGMT-LIST 194.238.49.0/24
+set policy-options prefix-list MGMT-LIST 213.18.248.78
+set policy-options prefix-list MGMT-LIST 62.171.194.96/27
+set policy-options prefix-list MGMT-LIST 192.168.170.128/25
+set policy-options prefix-list MGMT-LIST 217.181.32.0/24
+set policy-options prefix-list MGMT-LIST 192.168.170.190/32
+set policy-options prefix-list MGMT-LIST 192.168.170.194/32
+set firewall family inet filter MGMT-FILTER term T1 from source-prefix-list MGMT-LIST
+set firewall family inet filter MGMT-FILTER term T1 from protocol tcp
+set firewall family inet filter MGMT-FILTER term T1 from protocol udp
+set firewall family inet filter MGMT-FILTER term T1 from destination-port ssh
+set firewall family inet filter MGMT-FILTER term T1 from destination-port https
+set firewall family inet filter MGMT-FILTER term T1 from destination-port snmp
+set firewall family inet filter MGMT-FILTER term T1 then accept
+set firewall family inet filter MGMT-FILTER term T2 from protocol tcp
+set firewall family inet filter MGMT-FILTER term T2 from protocol udp
+set firewall family inet filter MGMT-FILTER term T2 from destination-port ssh
+set firewall family inet filter MGMT-FILTER term T2 from destination-port https
+set firewall family inet filter MGMT-FILTER term T2 from destination-port snmp
+set firewall family inet filter MGMT-FILTER term T2 then discard
+set firewall family inet filter MGMT-FILTER term T3 then accept
+set interfaces lo0 unit 0 family inet filter input MGMT-FILTER
+
+# SNMP
+set snmp location [RMID]
+set snmp contact iflsystems@ifl.net
+set snmp community thiflonly authorization read-only
+set snmp community thiflonly client-list-name MGMT-LIST

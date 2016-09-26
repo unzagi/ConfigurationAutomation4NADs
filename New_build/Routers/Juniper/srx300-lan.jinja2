@@ -1,0 +1,20 @@
+# LAN Interface
+set interfaces ge-0/0/0 unit 0 description "LAN - Curric"
+set interfaces ge-0/0/0 unit 0 family inet address [LAN_1_GATEWAY_CIDR]
+
+# BCP38
+set interfaces ge-0/0/0 unit 0 family inet rpf-check fail-filter rpf-special-case-dhcp-bootp
+
+# Disable unused interfaces
+set interfaces ge-0/0/1 disable
+set interfaces ge-0/0/2 disable
+set interfaces ge-0/0/3 disable
+set interfaces ge-0/0/4 disable
+set interfaces ge-0/0/5 disable
+set interfaces ge-0/0/7 disable
+
+# Create new Security Zones
+set security zones security-zone LAN interfaces ge-0/0/0
+
+# Permit inbound traffic from WAN and LAN to the router
+set security zones security-zone LAN interfaces ge-0/0/0 host-inbound-traffic system-services ping
